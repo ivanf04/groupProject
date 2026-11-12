@@ -2,14 +2,6 @@
 # Goal: familiarize ourselves with the dataset and determine which
 # advanced statistical techniques are appropriate.
 
-#load dataset in rconsole
-forest_fires = read.csv("forest+fires/forestfires.csv")
-
-#preview dataset 
-head(forest_fires)
-
-if (interactive()) View(forest_fires)
-
 # Compare burned area with spatial, fire-weather, and temperature variables.
 # Use the same y-axis limits in every panel so comparisons stay meaningful.
 plot_fire_relationships <- function(data) {
