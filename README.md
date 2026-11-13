@@ -1,7 +1,7 @@
 # SJSU Math-167R Project 
 ## Authors 
 - Ivan
-- Chris
+- Kris
 - Ryan
 
 ## The Data Set 
