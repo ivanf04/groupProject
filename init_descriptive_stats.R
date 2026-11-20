@@ -26,20 +26,14 @@ area_histogram = ggplot(forest_fires, aes(x = area)) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.08))) +
   labs(
     title = "Distribution of Burned Area",
-    subtitle = sprintf(
-      "%s observations  |  Median: %.2f ha  |  Mean: %.2f ha",
-      sum(!is.na(forest_fires$area)),
-      median(forest_fires$area, na.rm = TRUE),
-      mean(forest_fires$area, na.rm = TRUE)
-    ),
     x = "Burned area (hectares)",
     y = "Number of observations",
     caption = "Bin width: 25 hectares."
   ) +
   theme_minimal(base_size = 13) +
   theme(
-    plot.title = element_text(face = "bold", size = 18, color = "#183544"),
-    plot.subtitle = element_text(color = "#52616B", margin = margin(b = 16)),
+    plot.title = element_text(face = "bold", size = 18, color = "#183544",
+                              margin = margin(b = 10)),
     plot.caption = element_text(color = "#52616B", hjust = 0, margin = margin(t = 14)),
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
@@ -65,22 +59,23 @@ ggplot(forest_fires, aes(x = rain, y = area)) +
   geom_point()
 
 
-ggplot(forest_fires, aes(x = ISI, y = area)) + e
+ggplot(forest_fires, aes(x = ISI, y = area)) +
   geom_point() +
   geom_smooth(method= "lm", se = FALSE)
 
 lm_fit = lm(area ~ ISI,forest_fires)
 
-ggplot(forest_fires, aes(x = , y = area)) + 
-  geom_point() +
-  geom_smooth(method= "lm", se = FALSE)
+# Add a predictor before running this exploratory plot.
+# ggplot(forest_fires, aes(x = , y = area)) +
+#   geom_point() +
+#   geom_smooth(method = "lm", se = FALSE)
 
-lm_fit = lm(area~ISI,forest_fires)c
+lm_fit = lm(area~ISI,forest_fires)
 
 lm_fit2 = lm(log1p(area) ~ RH,forest_fires)
 summary(lm_fit2)
-ggplot(forest_fires, aes(x = day, y = area)) +
-  geom_boxplot(fill = "#87CEEB", color = "#334155") +
+ggplot(forest_fires_01, aes(x = day, y = area)) +
+  geom_boxplot(fill = "black", color = "black") +
   scale_x_discrete(
     limits = c("mon", "tue", "wed", "thu", "fri", "sat", "sun"),
     labels = c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
@@ -96,6 +91,6 @@ lm_fit3 = lm(log1p(area) ~ FFMC,forest_fires)
 summary(lm_fit3)
 
 
-ggplot(forest_fires, aes(x = FFMC, y = area) +
+ggplot(forest_fires, aes(x = FFMC, y = area)) +
   geom_point() +
   geom_smooth(method ="lm")

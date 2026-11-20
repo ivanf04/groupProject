@@ -7,5 +7,5 @@ head(forest_fires)
 
 if (interactive()) View(forest_fires)
 
-#data with area == 0 parsed out 
-forest_fires_01 = forest_fires[forest_fires$area != 0,]
+# Positive-area records, with burned area in hectares
+forest_fires_01 <- subset(forest_fires, area > 0)
