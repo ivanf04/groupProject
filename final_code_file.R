@@ -8,6 +8,9 @@ forest_fires <- read.csv(url, stringsAsFactors = TRUE)
 
 forest_fires_01 <- forest_fires[forest_fires$area>0,]   #dataset with area > 0
 
+#load ggplot2
+library(ggplot2)
+
 
 #Section 1: Initial descriptive statistics of our data set
 
@@ -93,7 +96,7 @@ boxplot(
 #find index of outliers 
 which(forest_fires_01$temp < 5)
 #index one outlier
-forest_fires1[130,]
+forest_fires_01[130,]
 
 #histogram of temperature
 par(bg = "gray90")
@@ -121,10 +124,10 @@ hist(
 #find outlier index
 which.max(forest_fires_01$area)
 #index outlier
-forest_fires1[101,]
+forest_fires_01[101,]
 
 #scatter plot temperature v. log area
-plot(log(forest_fires_01$area) ~  forest_fires1$temp,
+plot(log(forest_fires_01$area) ~  forest_fires_01$temp,
      xlab = "Temperature (°C)",
      ylab = "Log(Area Burned)",
      main = "Temperature vs. Log Area Burned",
@@ -171,6 +174,7 @@ qt(0.975, df = 268) #produces critical value
 anova(lm_fit) #produced f-value
 qf(0.95,1,268) #produced f-critical value
 
+#This plot was not used in our report
 ggplot(forest_fires_01, aes(x = temp, y = log(area + 1)))+ # (check for linearity)
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
