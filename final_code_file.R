@@ -82,7 +82,7 @@ comparison_table
 
 #Section 2: Data visualization 
 
-#plotting layout
+#plotting layout for data
 par(mfrow = c(1,1))
 
 #boxplot of temperature
@@ -93,14 +93,16 @@ boxplot(
   col = "gray"
 )
 
-#find index of outliers 
-which(forest_fires_01$temp < 5)
-#index one outlier
-forest_fires_01[130,]
+#calculate median, quartiles, and maximum
+quantile(forest_fires_01$temp)
 
-#histogram of temperature
+#locate extreme low temperature observations < 5
+which(forest_fires_01$temp < 5) #from pool, examine one extremity from temperature
+forest_fires_01[130,] #examine area burned for low temperature observation
+
 par(bg = "gray90")
 
+#histogram of temperature
 hist(
   forest_fires_01$temp,
   main = "Distribution of Temperature",
@@ -121,10 +123,8 @@ hist(
   col = "steelblue",
   border = "white"
 )
-#find outlier index
-which.max(forest_fires_01$area)
-#index outlier
-forest_fires_01[101,]
+which.max(forest_fires_01$area) #locate observation of largest area burned
+forest_fires_01[101,] #examine temperature at largest area burned
 
 #scatter plot temperature v. log area
 plot(log(forest_fires_01$area) ~  forest_fires_01$temp,
@@ -134,14 +134,14 @@ plot(log(forest_fires_01$area) ~  forest_fires_01$temp,
      pch = 19,
      col = "steelblue")
 
-#proposed linear regression model (temp w/ log area) 
+#fit simple linear regression using temperature to log area burned
 lm_fit <- lm(log(area) ~ temp, data = forest_fires_01)
 
-abline(lm_fit, lwd = 2)
+abline(lm_fit, lwd = 2) #fitted regression line
 
 #Q-Q residual plot
 qqnorm(
-  residuals(lm_fit),
+  residuals(lm_fit), #residuals of linear regression model
   main = "Normal Q-Q Plot of Regression Residuals",
   xlab = "Theoretical Normal Quantiles",
   ylab = "Observed Residuals",
@@ -154,8 +154,9 @@ qqnorm(
   panel.first = grid(col = "gray85", lty = 1)
 )
 
+#reference line
 qqline(
-  residuals(lm_fit),
+  residuals(lm_fit), #regression residuals
   col = "black",
   lwd = 2
 )
