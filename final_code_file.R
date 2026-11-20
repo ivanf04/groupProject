@@ -1,4 +1,5 @@
-#Final Submission 
+#Final Code for 167R Group Project - Group 2
+  #Kristopher Asuncion, Ivan Faranda, Ryan Wong 
 
 #Section 0: Setup
   #import data set & clean zero values 
@@ -13,23 +14,26 @@ forest_fires_01 <- forest_fires[forest_fires$area>0,]   #dataset with area > 0
 #Histogram of Burned Area 
 
 area_histogram = ggplot(forest_fires, aes(x = area)) +
-  geom_histogram(fill= "steelblue",na.rm = TRUE) +
-  labs(
+  geom_histogram(fill= "steelblue",na.rm = TRUE) + #blue color, remove NA vals
+  labs( #add labels 
     title = "Distribution of Burned Area",
     x = "Burned area (hectares)",
     y = "Number of observations",
   )
-  
+print(area_histogram) #display histogram in Rstudio
 
 #compute descriptive stats and a 95% confidence interval for the mean
+  #written as a function to be called twice; once for each dataset
 summarize_area <- function(area) {
   
+  #calculate basic stats
   area = area[!is.na(area)]  #remove NA values 
   n = length(area)
   mean_area = mean(area)
   quartiles = quantile(area,c(0.25, 0.75), names=FALSE)
-  margin <- qt(0.975, df = n-1) * sd(area) / sqrt(n)
+  margin <- qt(0.975, df = n-1) * sd(area) / sqrt(n) #used to find CI 
   
+  #R functions return last expression by default; function will return this vector
   c(
     records = n,
     mean = mean_area,
@@ -43,20 +47,22 @@ summarize_area <- function(area) {
   )
 }
 
+#Call summary function on both data sets, use cbind to combine the results 
 area_summary = cbind(
   "All records" = summarize_area(forest_fires$area),
   "Positive-area records" = summarize_area(forest_fires_01$area)
 )
 
-#format the table to look more pretty in the report 
+#format the table to look pretty in the report 
 format_area_summary <- function(summary) {
   format_area <- function(value) {
+    #2 digits after the decimal, add "," for large values 
     formatC(value, format = "f",digits = 2, big.mark = ",")
   }
   c(
-    format(summary["records"], big.mark = ",", trim = TRUE),
-    format_area(summary[c("mean", "median", "q1", "q3", "min", "max")]),
-    paste(format_area(summary[c("ci_lower","ci_upper")]), collapse = " to ")
+    format(summary["records"], big.mark = ",", trim = TRUE), #add "," remove blanks
+    format_area(summary[c("mean", "median", "q1", "q3", "min", "max")]),#call formatting function on stats
+    paste(format_area(summary[c("ci_lower","ci_upper")]), collapse = " to ") #add "to" between upper and lower intervals
   )
 }
 
@@ -67,6 +73,9 @@ rownames(comparison_table) <- c(
   "Records", "Mean (ha)","Median (ha)", "First quartile (ha)", "Third quartile (ha)",
   "Minimum (ha)", "Maximum (ha)", "95% CI for mean (ha)"
 )
+
+#display table in the console
+comparison_table
 
 #Section 2: Data visualization 
 
@@ -121,6 +130,7 @@ plot(log(forest_fires_01$area) ~  forest_fires1$temp,
      main = "Temperature vs. Log Area Burned",
      pch = 19,
      col = "steelblue")
+
 #proposed linear regression model (temp w/ log area) 
 lm_fit <- lm(log(area) ~ temp, data = forest_fires_01)
 
