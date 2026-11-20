@@ -74,6 +74,8 @@ lm_fit = lm(area~ISI,forest_fires)
 
 lm_fit2 = lm(log1p(area) ~ RH,forest_fires)
 summary(lm_fit2)
+
+
 ggplot(forest_fires_01, aes(x = day, y = area)) +
   geom_boxplot(fill = "black", color = "black") +
   scale_x_discrete(
